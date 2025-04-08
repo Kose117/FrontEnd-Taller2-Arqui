@@ -35,22 +35,22 @@
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
 	--color-muted-text: #1154A0;
-	--color-sidebar: #729551;
+	--color-sidebar: #004e36;
 	--color-sidebar-foreground: #ffffff;
 	--color-sidebar-primary: #0069d9;
 	--color-sidebar-primary-foreground: #ffffff;
-	--color-sidebar-accent: #546e3b;
+	--color-sidebar-accent: #008a5f;
 	--color-sidebar-accent-foreground: #ffffff;
-	--color-sidebar-border: #546e3b;
-	--color-sidebar-ring: #546e3b;
-	--color-loaders: #729551;
+	--color-sidebar-border: #008a5f;
+	--color-sidebar-ring: #008a5f;
+	--color-loaders: #e2c16f;
 }
 
 
 @layer base {
 	:root {
 		--background: hsl(0 0% 100%);
-		--foreground: #bc483f;
+		--foreground: #2e2d2b;
 		--card: hsl(0 0% 100%);
 		--card-foreground: hsl(0 0% 3.9%);
 		--popover: hsl(0 0% 100%);
