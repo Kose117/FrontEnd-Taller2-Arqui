@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 const Auth = lazy(() => import("../components/screens/AuthScreen"));
 const Layout = lazy(() => import("../components/templates/Layout"));
 const Dashboard = lazy(() => import("../components/screens/DashboardScreen"));
+const Products = lazy(() => import("../components/screens/ProductsScreen"));
+
 const FileHistory = lazy(
   () => import("../components/screens/FileHistoryScreen")
 );
@@ -35,6 +37,8 @@ export const AppRoutes = () => {
           <Route path="/" element={<Layout />}>
             <Route path="cuenta" element={<Account />} />
             <Route path="estadisticas" element={<Dashboard />} />
+            <Route path="productos" element={<Products />} />
+
 
           </Route>
         </Routes>

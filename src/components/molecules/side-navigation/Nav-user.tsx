@@ -77,21 +77,9 @@ export function NavUser({
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem asChild>
-                                <Link to='/ajustes/cuenta'>
+                                <Link to='/cuenta'>
                                     <User />
                                     Cuenta
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link to='/ajustes/prompts'>
-                                    <BrainCircuit />
-                                    Prompts
-                                </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Link to='/ajustes/apariencia'>
-                                    <Palette />
-                                    Apariencia
                                 </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
