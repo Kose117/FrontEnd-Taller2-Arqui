@@ -1,50 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import productStore from "../../stores/xStores";
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
+  createProduct,
+  editProduct,
+  deleteProduct,
+} from "../../actions/xActions";
+import {
+  Card, CardHeader, CardTitle, CardContent, CardFooter,
 } from "../atoms/ui/card";
 import { Button } from "../atoms/ui/button";
 import { ProductsTable } from "../templates/ProductTemplate";
 import { ConfirmationDialog } from "../molecules/ConfirmationDialog";
 
-// Definir la interfaz para un producto
-interface Product {
-  name: string;
-  total: number;
-  expirationDate: string;
-}
-
-// Inicializar como arreglo vacío
-const initialProducts: Product[] = [
-  { name: "Jugo de mango natural", total: 32, expirationDate: "2025-12-31" },
-  { name: "Mermelada de fresa", total: 17, expirationDate: "2025-11-20" },
-  { name: "Compota de manzana", total: 25, expirationDate: "2025-10-15" },
-  { name: "Trozos de piña enlatados", total: 41, expirationDate: "2025-09-05" },
-  { name: "Smoothie de frutos rojos", total: 29, expirationDate: "2025-08-30" },
-  { name: "Banano deshidratado", total: 13, expirationDate: "2025-07-25" },
-];
 export default function ProductsScreen() {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState(productStore.getProducts());
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
-  const handleCreate = () => {
-    const newProduct = {
-      name: "Nuevo producto",
-      total: 0,
-      expirationDate: "2026-01-01",
+  useEffect(() => {
+    const onChange = () => {
+      setProducts([...productStore.getProducts()]);
     };
-    setProducts([...products, newProduct]);
-  };
+    productStore.on( onChange);
 
-  const handleEdit = (index: number) => {
-    const edited = [...products];
-    edited[index].name += " (editado)";
-    setProducts(edited);
-  };
+    return () => {
+      productStore.off( onChange);
+    };
+  }, []);
+
+  const handleCreate = () => createProduct();
+  const handleEdit = (index: number) => editProduct(index);
 
   const handleDelete = (index: number) => {
     setDeleteIndex(index);
@@ -53,8 +38,7 @@ export default function ProductsScreen() {
 
   const confirmDelete = () => {
     if (deleteIndex !== null) {
-      const filtered = products.filter((_, i) => i !== deleteIndex);
-      setProducts(filtered);
+      deleteProduct(deleteIndex);
     }
     setShowDeleteDialog(false);
     setDeleteIndex(null);

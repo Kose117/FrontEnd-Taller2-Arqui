@@ -1,5 +1,7 @@
 
-import { BrainCircuit, ChevronsUpDown, LogOut, Palette, User } from "lucide-react"
+import { ChevronsUpDown, LogOut, User } from "lucide-react"
+import { useNavigate } from "react-router-dom";
+
 
 import { Avatar, AvatarFallback, AvatarImage } from "../../atoms/ui/avatar"
 import {
@@ -15,6 +17,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "../
 import { useAuthContext } from "@/context/AuthContext"
 import { Link } from "react-router-dom"
 
+
 export function NavUser({
     user,
 }: {
@@ -26,10 +29,13 @@ export function NavUser({
 }) {
     const { isMobile } = useSidebar()
     const { logout } = useAuthContext()
+    const navigate = useNavigate(); //
+
 
     const handleLogout = async () => {
         try {
             await logout()
+            navigate("/"); 
 
         } catch (error) {
             console.error("Error cerrando sesión:", error)

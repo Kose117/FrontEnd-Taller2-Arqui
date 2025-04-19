@@ -7,7 +7,6 @@ import {
     TableCell,
   } from "../atoms/ui/table"
   import { Button } from "../atoms/ui/button"
-  import { Badge } from "../atoms/ui/badge"
   
   export function ProductsTable({ products, onEdit, onDelete }: any) {
     return (
@@ -16,7 +15,6 @@ import {
           <TableHeader>
             <TableRow>
               <TableHead>Producto</TableHead>
-              <TableHead>Total</TableHead>
               <TableHead>Vencimiento</TableHead>
               <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
@@ -32,9 +30,6 @@ import {
               products.map((product: any, index: number) => (
                 <TableRow key={index}>
                   <TableCell className="whitespace-nowrap">{product.name}</TableCell>
-                  <TableCell>
-                    <Badge variant="approved">{product.total}</Badge>
-                  </TableCell>
                   <TableCell className="whitespace-nowrap">{product.expirationDate}</TableCell>
                   <TableCell className="text-right space-x-2 whitespace-nowrap">
                     <Button variant="secondary" size="sm" onClick={() => onEdit(index)}>
