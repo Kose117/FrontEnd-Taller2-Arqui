@@ -1,62 +1,69 @@
-import { useState } from "react"
+import { useState } from "react";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   CardFooter,
-} from "../atoms/ui/card"
-import { Button } from "../atoms/ui/button"
-import { ProductsTable } from "../templates/ProductTemplate"
-import { ConfirmationDialog } from "../molecules/ConfirmationDialog"
+} from "../atoms/ui/card";
+import { Button } from "../atoms/ui/button";
+import { ProductsTable } from "../templates/ProductTemplate";
+import { ConfirmationDialog } from "../molecules/ConfirmationDialog";
 
-const initialProducts = [
+// Definir la interfaz para un producto
+interface Product {
+  name: string;
+  total: number;
+  expirationDate: string;
+}
+
+// Inicializar como arreglo vacío
+const initialProducts: Product[] = [
   { name: "Jugo de mango natural", total: 32, expirationDate: "2025-12-31" },
   { name: "Mermelada de fresa", total: 17, expirationDate: "2025-11-20" },
   { name: "Compota de manzana", total: 25, expirationDate: "2025-10-15" },
   { name: "Trozos de piña enlatados", total: 41, expirationDate: "2025-09-05" },
   { name: "Smoothie de frutos rojos", total: 29, expirationDate: "2025-08-30" },
   { name: "Banano deshidratado", total: 13, expirationDate: "2025-07-25" },
-]
-
+];
 export default function ProductsScreen() {
-  const [products, setProducts] = useState(initialProducts)
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [deleteIndex, setDeleteIndex] = useState<number | null>(null)
+  const [products, setProducts] = useState(initialProducts);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
 
   const handleCreate = () => {
     const newProduct = {
       name: "Nuevo producto",
       total: 0,
       expirationDate: "2026-01-01",
-    }
-    setProducts([...products, newProduct])
-  }
+    };
+    setProducts([...products, newProduct]);
+  };
 
   const handleEdit = (index: number) => {
-    const edited = [...products]
-    edited[index].name += " (editado)"
-    setProducts(edited)
-  }
+    const edited = [...products];
+    edited[index].name += " (editado)";
+    setProducts(edited);
+  };
 
   const handleDelete = (index: number) => {
-    setDeleteIndex(index)
-    setShowDeleteDialog(true)
-  }
+    setDeleteIndex(index);
+    setShowDeleteDialog(true);
+  };
 
   const confirmDelete = () => {
     if (deleteIndex !== null) {
-      const filtered = products.filter((_, i) => i !== deleteIndex)
-      setProducts(filtered)
+      const filtered = products.filter((_, i) => i !== deleteIndex);
+      setProducts(filtered);
     }
-    setShowDeleteDialog(false)
-    setDeleteIndex(null)
-  }
+    setShowDeleteDialog(false);
+    setDeleteIndex(null);
+  };
 
   const cancelDelete = () => {
-    setShowDeleteDialog(false)
-    setDeleteIndex(null)
-  }
+    setShowDeleteDialog(false);
+    setDeleteIndex(null);
+  };
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 mt-10">
@@ -87,5 +94,5 @@ export default function ProductsScreen() {
         cancelText="Cancelar"
       />
     </div>
-  )
+  );
 }

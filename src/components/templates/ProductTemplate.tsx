@@ -22,26 +22,33 @@ import {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product: any, index: number) => (
-              <TableRow key={index}>
-                <TableCell className="whitespace-nowrap">{product.name}</TableCell>
-                <TableCell>
-                  <Badge variant="approved">{product.total}</Badge>
-                </TableCell>
-                <TableCell className="whitespace-nowrap">{product.expirationDate}</TableCell>
-                <TableCell className="text-right space-x-2 whitespace-nowrap">
-                  <Button variant="secondary" size="sm" onClick={() => onEdit(index)}>
-                    Editar
-                  </Button>
-                  <Button variant="destructive" size="sm" onClick={() => onDelete(index)}>
-                    Eliminar
-                  </Button>
+            {products.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center text-gray-500 py-6">
+                  No hay productos disponibles. ¡Crea uno nuevo!
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              products.map((product: any, index: number) => (
+                <TableRow key={index}>
+                  <TableCell className="whitespace-nowrap">{product.name}</TableCell>
+                  <TableCell>
+                    <Badge variant="approved">{product.total}</Badge>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">{product.expirationDate}</TableCell>
+                  <TableCell className="text-right space-x-2 whitespace-nowrap">
+                    <Button variant="secondary" size="sm" onClick={() => onEdit(index)}>
+                      Editar
+                    </Button>
+                    <Button variant="destructive" size="sm" onClick={() => onDelete(index)}>
+                      Eliminar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>
     )
   }
-  

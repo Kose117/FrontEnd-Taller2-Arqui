@@ -1,14 +1,6 @@
 import { Outlet } from "react-router-dom"
 
 import { AppSidebar } from "../organisms/AppSideBar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "../atoms/ui/breadcrumb"
 import { Separator } from "../atoms/ui/separator"
 import {
   SidebarInset,

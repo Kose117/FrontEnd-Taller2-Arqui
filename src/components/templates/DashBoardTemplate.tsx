@@ -5,7 +5,6 @@ import { BarChartComponent } from "../molecules/graphics/Bar-Chart";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../atoms/ui/card";
