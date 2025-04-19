@@ -1,4 +1,4 @@
-import { LayoutGrid, FileStack, ChartLine, Settings, User, Palette, BrainCircuit } from "lucide-react";
+import {ShoppingBasket, Settings, User, Presentation} from "lucide-react";
 import type { SidebarData } from "../types/sideBar";
 
 export const sidebarData: SidebarData = {
@@ -12,19 +12,14 @@ export const sidebarData: SidebarData = {
       title: 'Menú',
       items: [
         {
-          title: "Evaluación",
-          url: "/evaluacion",
-          icon: FileStack,
-        },
-        {
-          title: "Historial de archivos",
-          url: "/historial-archivos",
-          icon: FileStack,
-        },
-        {
-          title: "Estadísticas",
+          title: "Dashboard",
           url: "/estadisticas",
-          icon: ChartLine,
+          icon: Presentation,
+        },
+        {
+          title: "Mis productos",
+          url: "/productos",
+          icon: ShoppingBasket,
         },
       ],
     },
@@ -37,20 +32,9 @@ export const sidebarData: SidebarData = {
           items: [
             {
               title: 'Cuenta',
-              url: '/ajustes/cuenta',
+              url: '/cuenta',
               icon: User,
             },
-            {
-              title: 'Prompts',
-              url: '/ajustes/prompts',
-              icon: BrainCircuit,
-            },
-            {
-              title: 'Apariencia',
-              url: '/ajustes/apariencia',
-              icon: Palette,
-            },
-            
           ],
         }
       ],
