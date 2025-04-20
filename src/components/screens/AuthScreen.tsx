@@ -1,38 +1,30 @@
-import AuthTemplate from "@/components/templates/AuthTemplate";
-import { FormField } from "@/types/formTypes";
-import { useAuthContext } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import AuthTemplate from '@/components/templates/AuthTemplate';
+import { FormField } from '@/types/formTypes';
+import { useAuthContext } from '@/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const loginFields: FormField[] = [
-  { type: "email", key: "email", placeholder: "Ingresa tu correo institucional", required: true },
-  { type: "password", key: "password", placeholder: "Ingresa tu contraseña", required: true },
+  { type: 'email', key: 'email', placeholder: 'Correo', required: true },
+  { type: 'password', key: 'password', placeholder: 'Contraseña', required: true },
 ];
 
 const registryFields: FormField[] = [
-  { type: "user", key: "name", placeholder: "Ingresa tu nombre", required: true },
-  { type: "user", key: "last_name", placeholder: "Ingresa tu apellido", required: true },
-  { type: "email", key: "email", placeholder: "Ingresa tu correo institucional", required: true },
-  { type: "password", key: "password", placeholder: "Ingresa tu contraseña", required: true },
+  { type: 'email', key: 'email', placeholder: 'Correo', required: true },
+  { type: 'password', key: 'password', placeholder: 'Contraseña', required: true },
 ];
 
 export default function AuthScreen() {
-  const { login, createAccount } = useAuthContext();
+  const { login, register } = useAuthContext();
   const navigate = useNavigate();
 
-  const handleLogin = async (credentials: { email: string; password: string }) => {
-    await login(credentials.email, credentials.password);
-    navigate("/estadisticas"); // redirige inmediatamente
+  const handleLogin = async ({ email, password }: { email: string; password: string }) => {
+    await login(email, password);
+    navigate('/estadisticas');
   };
 
-  const handleRegister = async (data: {
-    name: string;
-    last_name: string;
-    email: string;
-    password: string;
-  }) => {
-    await createAccount(data);
-    await login(data.email, data.password);
-    navigate("/estadisticas"); // también redirige luego del registro
+  const handleRegister = async (d: any) => {
+    await register(d);
+    navigate('/estadisticas');
   };
 
   return (

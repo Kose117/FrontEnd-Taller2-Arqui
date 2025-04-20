@@ -32,10 +32,10 @@ export const AppRoutes = () => {
             <Route path="/ajustes" element={<Settings />} >
               <Route path="cuenta" element={<Account />} />
             </Route>
-            {/* <Route element={<OperadorRoutes />}> */}
+            <Route element={<OperadorRoutes />}>
               <Route path="estadisticas" element={<Dashboard />} />
               <Route path="productos" element={<Products />} />
-            {/* </Route> */}
+            </Route>
           </Route>
 
 

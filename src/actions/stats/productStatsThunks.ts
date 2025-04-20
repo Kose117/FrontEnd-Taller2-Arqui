@@ -4,13 +4,13 @@ import {
     statsSuccess,
     statsFailure,
 } from './productStatsActions';
-import { statsApi } from '@/lib/api/statsApi'
+import { axiosApi as axios } from '@/lib/api/axios';
 import type { ProductStatsDto } from '@/types/statsTypes';
 
 export const loadStats = async (from: string, to: string) => {
     AppDispatcher.dispatch(statsRequest());
     try {
-        const { data } = await statsApi.get<ProductStatsDto>(
+        const { data } = await axios.get<ProductStatsDto>(
             '/stats/products',
             { params: { from, to } }
         );

@@ -1,4 +1,4 @@
-import { loadStats } from '@/actions/productStatsThunks';
+import { loadStats } from '@/actions/stats/productStatsThunks';
 
 export const useProductStatsActions = () => ({
     loadStats,

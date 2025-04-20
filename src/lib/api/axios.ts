@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-export const userApi = axios.create({
+export const axiosApi = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
-userApi.interceptors.request.use(
+axiosApi.interceptors.request.use(
   config => config,
   error => Promise.reject(error)
 );
 
-userApi.interceptors.response.use(
+axiosApi.interceptors.response.use(
   response => response,
   error => {
     console.error("API Error:", error);

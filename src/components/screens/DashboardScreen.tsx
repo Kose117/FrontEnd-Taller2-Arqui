@@ -9,8 +9,8 @@ import {
 
 import DashboardTemplate from '../templates/DashBoardTemplate';
 import type { StatsCardProps } from '@/components/molecules/Stats-card';
-import { useProductStatsStore } from '@/hooks/flux/useProductStatsStore';
-import { useProductStatsActions } from '@/hooks/flux/useProductStatsActions';
+import { useProductStatsStore } from '@/hooks/flux/stats/useProductStatsStore';
+import { useProductStatsActions } from '@/hooks/flux/stats/useProductStatsActions';
 
 export default function DashboardScreen() {
   // 1. Rango de fechas

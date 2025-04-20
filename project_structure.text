@@ -4,14 +4,27 @@
 - components.json
 - index.html
 - package.json
+- project_structure.text
 - README.md
 - src
   - actions
-    - xActions.ts
+    - auth
+      - authActions.ts
+      - authThunks.ts
+    - product
+      - productActions.ts
+      - productThunks.ts
+    - stats
+      - productStatsActions.ts
+      - productStatsThunks.ts
+    - user
+      - userActions.ts
+      - userThunks.ts
   - App.tsx
   - assets
     - Fondo.jpg
     - Fondo1.jpg
+    - image.png
     - react.svg
   - components
     - atoms
@@ -92,8 +105,6 @@
       - DashboardScreen.tsx
       - errors
         - 401.tsx
-      - EvaluationScreen.tsx
-      - FileHistoryScreen.tsx
       - LayoutScreen.tsx
       - ProductsScreen.tsx
       - settings
@@ -104,8 +115,6 @@
     - templates
       - AuthTemplate.tsx
       - DashBoardTemplate.tsx
-      - EvaluationResultTemplate.tsx
-      - FileHistoryTemplate.tsx
       - LayoutTemplate.tsx
       - ProductTemplate.tsx
       - settings
@@ -118,42 +127,51 @@
   - data
     - sidebar-data.ts
   - dispatcher
-    - xDispatcher.ts
+    - AppDispatcher.ts
   - hooks
+    - flux
+      - auth
+        - useAuthActions.ts
+        - useAuthStore.ts
+      - product
+        - useProductActions.ts
+        - useProductStore.ts
+      - stats
+        - useProductStatsActions.ts
+        - useProductStatsStore.ts
+      - user
+        - useUserActions.ts
+        - useUserStore.ts
     - index.ts
     - use-mobile.ts
     - use-toast.ts
-    - user
-      - useCreateUserHook.ts
-      - useDeleteUserHook.ts
-      - useGetAllUsersHook.ts
-      - useGetUserByIdHook.ts
-      - useUpdateUserHook.ts
   - lib
     - api
       - authApi.ts
+      - axios.ts
       - constants.ts
       - index.ts
-      - pdfApi.ts
-      - userApi.ts
     - requestsApi.ts
     - utils
+      - browseEventEmitter.ts
+      - eventEmitter.ts
       - index.ts
   - main.tsx
   - routes
     - index.tsx
     - OperadorRoutes.tsx
-  - services
-    - authService.ts
-    - userService.ts
   - stores
-    - xStores.ts
+    - AuthStore.ts
+    - ProductStatsStore.ts
+    - ProductStore.ts
+    - UserStore.ts
   - styles
     - index.css
   - types
     - authType.ts
     - formTypes.ts
     - index.ts
+    - productType.ts
     - sideBar.ts
     - statsTypes.ts
     - table.ts

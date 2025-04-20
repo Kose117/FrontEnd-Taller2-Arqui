@@ -1,82 +1,95 @@
-import { useState, useEffect } from "react";
-import productStore from "../../stores/xStores";
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProductTemplate from '@/components/templates/ProductTemplate';
+import { ColumnConfig } from '@/types/table';
+import { CheckCircle } from 'lucide-react';
 import {
-  createProduct,
-  editProduct,
-  deleteProduct,
-} from "../../actions/xActions";
+  useProductStore,
+} from '@/hooks/flux/product/useProductStore';
 import {
-  Card, CardHeader, CardTitle, CardContent, CardFooter,
-} from "../atoms/ui/card";
-import { Button } from "../atoms/ui/button";
-import { ProductsTable } from "../templates/ProductTemplate";
-import { ConfirmationDialog } from "../molecules/ConfirmationDialog";
+  useProductActions,
+} from '@/hooks/flux/product/useProductActions';
 
-export default function ProductsScreen() {
-  const [products, setProducts] = useState(productStore.getProducts());
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [deleteIndex, setDeleteIndex] = useState<number | null>(null);
+/* ---------- helpers ---------- */
 
-  useEffect(() => {
-    const onChange = () => {
-      setProducts([...productStore.getProducts()]);
-    };
-    productStore.on( onChange);
+const usd = (v: number) =>
+  `$${v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-    return () => {
-      productStore.off( onChange);
-    };
-  }, []);
+const fmtDate = (d: string | Date) =>
+  new Date(d).toISOString().split('T')[0];
 
-  const handleCreate = () => createProduct();
-  const handleEdit = (index: number) => editProduct(index);
+const toTableRow = (p: any) => ({
+  id: p.id,
+  name: p.name,
+  price: usd(p.price),
+  quantity: { label: String(p.quantity) },     // badgeWithText sin texto adicional
+  expirationDate: fmtDate(p.expirationDate),
+});
 
-  const handleDelete = (index: number) => {
-    setDeleteIndex(index);
-    setShowDeleteDialog(true);
+/* ---------- ColumnConfig ---------- */
+
+function columns({
+  onEdit, onDelete,
+}: {
+  onEdit: (row: any) => void;
+  onDelete: (row: any) => void;
+}): ColumnConfig[] {
+  return [
+    { id: 'id', accessorKey: 'id', headerLabel: 'ID', searchable: true },
+    { id: 'name', accessorKey: 'name', headerLabel: 'Nombre', searchable: true },
+    { id: 'price', accessorKey: 'price', headerLabel: 'Precio (USD)' },
+    {
+      id: 'quantity',
+      accessorKey: 'quantity',
+      headerLabel: 'Stock',
+      type: 'badgeWithText',
+      badgeKey: 'label',
+      badgeVariant: 'default',
+    },
+    { id: 'expirationDate', accessorKey: 'expirationDate', headerLabel: 'Vence' },
+    {
+      id: 'actions',
+      type: 'actions',
+      actionItems: [
+        { label: 'Editar', onClick: onEdit },
+        { label: 'Eliminar', onClick: onDelete },
+      ],
+    },
+  ];
+}
+
+/* ---------- Screen ---------- */
+
+export default function ProductListScreen() {
+  const { products } = useProductStore();
+  const { loadUserProducts, updateProduct, deleteProduct } = useProductActions();
+  const navigate = useNavigate();
+
+  /* cargar al montar */
+  useEffect(() => { loadUserProducts(); }, [loadUserProducts]);
+
+  /* transformar datos para la tabla */
+  const tableData = useMemo(() => products.map(toTableRow), [products]);
+
+  /* acciones UI */
+  const handleEdit = async (row: any) => {
+    const newName = window.prompt('Nuevo nombre:', row.name);
+    if (!newName || newName === row.name) return;
+    await updateProduct(row.id, { name: newName });
   };
 
-  const confirmDelete = () => {
-    if (deleteIndex !== null) {
-      deleteProduct(deleteIndex);
+  const handleDelete = async (row: any) => {
+    if (window.confirm(`¿Eliminar producto "${row.name}"?`)) {
+      await deleteProduct(row.id);
     }
-    setShowDeleteDialog(false);
-    setDeleteIndex(null);
   };
 
-  const cancelDelete = () => {
-    setShowDeleteDialog(false);
-    setDeleteIndex(null);
-  };
+  const cols = useMemo(
+    () => columns({ onEdit: handleEdit, onDelete: handleDelete }),
+    [handleEdit, handleDelete],
+  );
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 mt-10">
-      <Card className="w-full max-w-7xl mx-auto">
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl md:text-2xl">
-            Gestión de productos
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="overflow-x-auto">
-          <ProductsTable
-            products={products}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </CardContent>
-        <CardFooter className="justify-end">
-          <Button onClick={handleCreate}>Crear producto</Button>
-        </CardFooter>
-      </Card>
-      <ConfirmationDialog
-        isOpen={showDeleteDialog}
-        onConfirm={confirmDelete}
-        onCancel={cancelDelete}
-        title="¿Seguro quieres eliminar?"
-        description="Esta acción eliminará el producto permanentemente."
-        confirmText="Eliminar"
-        cancelText="Cancelar"
-      />
-    </div>
+    <ProductTemplate data={tableData} columnsConfig={cols} />
   );
 }

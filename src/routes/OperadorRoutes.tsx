@@ -1,4 +1,5 @@
 import { useAuthContext } from "@/context/AuthContext"
+import { log } from "console";
 import { Navigate, Outlet } from "react-router-dom"
 
 export default function EvaluatorRoutes() {
@@ -8,7 +9,7 @@ export default function EvaluatorRoutes() {
         return <Navigate to="/auth" />;
     }
 
-    if (user?.type === "OperadorRoutes") {
+    if (user?.type === "OPERATOR" || user?.type === "ADMIN") {
         return <Outlet />
     }
 
