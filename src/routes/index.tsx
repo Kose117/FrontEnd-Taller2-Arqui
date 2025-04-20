@@ -4,26 +4,20 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 // componentes principales
 const Auth = lazy(() => import("../components/screens/AuthScreen"));
-const Layout = lazy(() => import("../components/templates/Layout"));
+const Layout = lazy(() => import("../components/screens/LayoutScreen"));
 const Dashboard = lazy(() => import("../components/screens/DashboardScreen"));
 const Products = lazy(() => import("../components/screens/ProductsScreen"));
 
-const FileHistory = lazy(
-  () => import("../components/screens/FileHistoryScreen")
-);
-const Evaluation = lazy(() => import("../components/screens/EvaluationScreen"));
+
 const UnauthorizedErrorScreen = lazy(
   () => import("../components/screens/errors/401")
 );
 
 // rutas de rol
-const EvaluatorRoutes = lazy(() => import("./EvaluatorRoutes"));
-const ResearcherRoutes = lazy(() => import("./ResearcherRoutes"));
+const OperadorRoutes = lazy(() => import("./OperadorRoutes"));
 
-// rutas de ajustes
-const Account = lazy(
-  () => import("../components/screens/settings/AccountScreen")
-);
+const Settings = lazy(() => import("../components/screens/settings/SettingsScreen"));
+const Account = lazy(() => import("../components/screens/settings/AccountScreen"));
 
 export const AppRoutes = () => {
   return (
@@ -31,18 +25,22 @@ export const AppRoutes = () => {
       <Suspense fallback={<LoadingFallback />}>
         <Routes>
           <Route path="/" element={<Navigate to="/auth" />} />
-          <Route path="/auth" element={<Auth />} />
           <Route path="/no-autorizado" element={<UnauthorizedErrorScreen />} />
+          <Route path="/auth" element={<Auth />} />
 
           <Route path="/" element={<Layout />}>
-            <Route path="cuenta" element={<Account />} />
-            <Route path="estadisticas" element={<Dashboard />} />
-            <Route path="productos" element={<Products />} />
-
-
+            <Route path="/ajustes" element={<Settings />} >
+              <Route path="cuenta" element={<Account />} />
+            </Route>
+            {/* <Route element={<OperadorRoutes />}> */}
+              <Route path="estadisticas" element={<Dashboard />} />
+              <Route path="productos" element={<Products />} />
+            {/* </Route> */}
           </Route>
+
+
         </Routes>
       </Suspense>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };

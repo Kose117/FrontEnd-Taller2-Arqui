@@ -1,10 +1,9 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { toast } from "@/hooks/use-toast"
 import { DynamicFormHandles } from "@/components/molecules/Dynamic-form"
 import AccountTemplate from "@/components/templates/settings/AccountTemplate"
 import { FormField } from "@/types/formTypes"
 
-/** Campos en una sola columna: Nombre, Apellido, Contraseña */
 const accountFields: FormField[] = [
     {
         type: "user",
@@ -32,10 +31,8 @@ export default function AccountScreen() {
     const formRef = useRef<DynamicFormHandles>(null)
 
     const handleUpdate = () => {
-        // Al hacer clic, se llama a handleSubmit del DynamicForm
         if (formRef.current) {
             formRef.current.handleSubmit((data) => {
-                // Aquí puedes hacer tu lógica: API, estado global, etc.
                 console.log("Account data submitted => ", data)
                 toast({
                     title: "Cuenta actualizada",
