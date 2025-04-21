@@ -39,8 +39,9 @@ export const logout = async () => {
 export const register = async (payload: { email: string; password: string }) => {
     AppDispatcher.dispatch(authReq());
     try {
-        const { data } = await authApi.post('/user/operador', payload);
-        AppDispatcher.dispatch(authOk(norm(data)));
+        await authApi.post('/user/operador', payload);
+        await authApi.post('/auth/login', payload);
+        await loadUser();
     } catch (e) {
         AppDispatcher.dispatch(authErr((e as Error).message));
     }
