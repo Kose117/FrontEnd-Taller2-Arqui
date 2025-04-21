@@ -8,7 +8,6 @@ export const USER_ADD_REQ = 'USER_ADD_REQ' as const;
 export const USER_ADD_OK = 'USER_ADD_OK' as const;
 export const USER_ADD_ERR = 'USER_ADD_ERR' as const;
 
-// action creators
 export const usersReq = () => ({ type: USERS_REQ });
 export const usersOk = (p: User[]) => ({ type: USERS_OK, payload: p });
 export const usersErr = (e: string) => ({ type: USERS_ERR, error: e });

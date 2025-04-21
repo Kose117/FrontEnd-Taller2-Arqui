@@ -14,6 +14,7 @@ export const loadStats = async (from: string, to: string) => {
             '/stats/products',
             { params: { from, to } }
         );
+        console.log(data);
         AppDispatcher.dispatch(statsSuccess(data));
     } catch (e) {
         AppDispatcher.dispatch(

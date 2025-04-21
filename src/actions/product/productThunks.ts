@@ -1,30 +1,40 @@
-import { axiosApi as axios } from '@/lib/api/axios';
+import { axiosApi } from '@/lib/api/axios';
 import { AppDispatcher } from '@/dispatcher/AppDispatcher';
 import {
-    prodReq, prodOk, prodErr,
-    prodUpdOk, prodDelOk,
+    productsReq, productsOk, productsErr,
+    productAddOk, productUpdateOk, productDelOk,
 } from './productActions';
 import type { Product } from '@/types/productType';
 
-/* GET /products/getAllByUser */
+/* ---------- helpers ---------- */
+
+const unwrap = (r: any): Product[] =>
+    Array.isArray(r.products) ? r.products : r;
+
+/* ---------- thunks ---------- */
+
 export const loadUserProducts = async () => {
-    AppDispatcher.dispatch(prodReq());
+    AppDispatcher.dispatch(productsReq());
     try {
-        const { data } = await axios.get<Product[]>('/products/');
-        AppDispatcher.dispatch(prodOk(data));
+        const { data } = await axiosApi.get<{ products: Product[] }>('/product/user');
+        console.log(data);
+        AppDispatcher.dispatch(productsOk(unwrap(data)));
     } catch (e) {
-        AppDispatcher.dispatch(prodErr((e as Error).message));
+        AppDispatcher.dispatch(productsErr((e as Error).message));
     }
 };
 
-/* PATCH /products/:id */
-export const updateProduct = async (id: string, body: Partial<Product>) => {
-    const { data } = await axios.patch<Product>(`/products/${id}`, body);
-    AppDispatcher.dispatch(prodUpdOk(data));       // actualiza store
+export const addProduct = async (payload: Omit<Product, 'id' | 'userId'>) => {
+    const { data } = await axiosApi.post<Product>('/product', payload);
+    AppDispatcher.dispatch(productAddOk(data));
 };
 
-/* DELETE /products/:id */
+export const updateProduct = async (id: string, partial: Partial<Product>) => {
+    const { data } = await axiosApi.patch<Product>(`/product/${id}`, partial);
+    AppDispatcher.dispatch(productUpdateOk(data));
+};
+
 export const deleteProduct = async (id: string) => {
-    await axios.delete(`/products/${id}`);
-    AppDispatcher.dispatch(prodDelOk(id));
+    await axiosApi.delete(`/product/${id}`);
+    AppDispatcher.dispatch(productDelOk(id));
 };

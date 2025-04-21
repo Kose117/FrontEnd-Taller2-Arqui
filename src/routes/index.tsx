@@ -2,7 +2,6 @@ import { LoadingFallback } from "@/components/molecules/LoadingFallback";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-// componentes principales
 const Auth = lazy(() => import("../components/screens/AuthScreen"));
 const Layout = lazy(() => import("../components/screens/LayoutScreen"));
 const Dashboard = lazy(() => import("../components/screens/DashboardScreen"));
@@ -13,7 +12,6 @@ const UnauthorizedErrorScreen = lazy(
   () => import("../components/screens/errors/401")
 );
 
-// rutas de rol
 const OperadorRoutes = lazy(() => import("./OperadorRoutes"));
 
 const Settings = lazy(() => import("../components/screens/settings/SettingsScreen"));

@@ -136,7 +136,7 @@ export function DataTable<TData, TValue>({
                       }
                     }}
                     // Resalta la fila si está seleccionada.
-                    className={`cursor-pointer transition-colors duration-200 hover:bg-gray-100 ${isSelected ? "bg-blue-50" : ""}`}
+                    className={`cursor-pointer transition-colors duration-200 hover:bg-muted ${isSelected ? "bg-blue-50" : ""}`}
                     data-state={isSelected && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -151,7 +151,7 @@ export function DataTable<TData, TValue>({
               // Si no hay filas.
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
+                  No se encontraron resultados.
                 </TableCell>
               </TableRow>
             )}

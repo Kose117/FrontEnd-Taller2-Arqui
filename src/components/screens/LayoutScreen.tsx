@@ -38,7 +38,7 @@ export default function LayoutScreen() {
                             }
                         }
                     })
-                    .filter(Boolean) as NavItem[] // Forzamos a NavItem tras filtrar nulos
+                    .filter(Boolean) as NavItem[]
             }))
         }
     }
@@ -49,7 +49,6 @@ export default function LayoutScreen() {
             ? filterSidebarDataByRole(sidebarData, user.type)
             : sidebarData
 
-    // Lógica de logout
     async function handleLogout() {
         try {
             await logout()
@@ -58,12 +57,10 @@ export default function LayoutScreen() {
         }
     }
 
-    // Lógica de iniciales
     function getInitials() {
         if (!user) return ""
-        const firstInitial = user.name?.charAt(0)?.toUpperCase() || ""
-        const lastInitial = user.last_name?.charAt(0)?.toUpperCase() || ""
-        return `${firstInitial}${lastInitial}`
+        const firstInitial = user.email?.charAt(0)?.toUpperCase() || ""
+        return `${firstInitial}`
     }
     return (
         <LayoutTemplate

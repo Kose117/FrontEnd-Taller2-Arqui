@@ -1,22 +1,20 @@
-import { SimpleEventEmitter,Listener  } from '@/lib/utils/eventEmitter';
 import { AppDispatcher } from '@/dispatcher/AppDispatcher';
 import {
     PROD_REQ, PROD_OK, PROD_ERR,
-    PROD_UPD_OK, PROD_DEL_OK,
+    PROD_ADD_OK, PROD_UPD_OK, PROD_DEL_OK,
 } from '@/actions/product/productActions';
 import type { Product } from '@/types/productType';
+import { SimpleEventEmitter, Listener } from '@/lib/utils/eventEmitter';
 
 type State = { loading: boolean; products: Product[]; error?: string };
 let state: State = { loading: false, products: [] };
 
-class ProductStore {
+export class ProductStore {
     private emitter = new SimpleEventEmitter();
 
-    // Suscripción / desuscripción para useSyncExternalStore
     addChangeListener(fn: Listener) { this.emitter.on(fn); }
     removeChangeListener(fn: Listener) { this.emitter.off(fn); }
 
-    // Devuelve snapshot actual
     getState(): State { return state; }
 
     handle = (action: any) => {
@@ -26,6 +24,9 @@ class ProductStore {
                 break;
             case PROD_OK:
                 state = { loading: false, products: action.payload };
+                break;
+            case PROD_ADD_OK:
+                state = { ...state, products: [...state.products, action.payload] };
                 break;
             case PROD_UPD_OK:
                 state = {
@@ -50,4 +51,4 @@ class ProductStore {
 }
 
 export const productStore = new ProductStore();
-AppDispatcher.register(productStore.handle);
+AppDispatcher.register(productStore.handle.bind(productStore));

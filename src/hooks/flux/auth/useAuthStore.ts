@@ -5,10 +5,7 @@ export const useAuthStore = () =>
     useSyncExternalStore(
         (callback) => {
             authStore.on(callback);
-            return () => {
-                authStore.off(callback);
-            };
+            return () => authStore.off(callback);
         },
-        // getSnapshot
         () => authStore.getState()
     );

@@ -10,11 +10,25 @@ const renderLabel = ({
   const x = cx + r * Math.cos(-midAngle * RAD);
   const y = cy + r * Math.sin(-midAngle * RAD);
   return (
-    <text x={x} y={y} fill="#fff" fontSize="12" fontWeight="bold"
-      textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+    <text
+      x={x}
+      y={y}
+      fill="#fff"
+      fontSize="12"
+      fontWeight="bold"
+      textAnchor={x > cx ? 'start' : 'end'}
+      dominantBaseline="central"
+    >
       {(percent * 100).toFixed(0)}%
     </text>
   );
+};
+
+// simple translation map
+const LEGEND_LABELS: Record<string, string> = {
+  Operating: 'Operando',
+  Sent: 'Enviado',
+  Delivered: 'Entregado',
 };
 
 export const PieChartComponent: React.FC<{
@@ -22,26 +36,43 @@ export const PieChartComponent: React.FC<{
   loading?: boolean;
 }> = ({ data, loading }) => {
   const [chartData, setChartData] = React.useState<PieSlice[]>(data);
-  React.useEffect(() => { if (!loading) setChartData(data); }, [data, loading]);
+  React.useEffect(() => {
+    if (!loading) setChartData(data);
+  }, [data, loading]);
 
   return (
     <div className="relative flex flex-col items-center w-full">
       <ResponsiveContainer width="100%" height={350}>
         <PieChart>
-          <Pie data={chartData} dataKey="value" cx="50%" cy="50%"
-            outerRadius="70%" labelLine={false} label={renderLabel}>
+          <Pie
+            data={chartData}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            outerRadius="70%"
+            labelLine={false}
+            label={renderLabel}
+          >
             {chartData.map((_, i) => (
-              <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+              <Cell
+                key={i}
+                fill={PIE_COLORS[i % PIE_COLORS.length]}
+              />
             ))}
           </Pie>
         </PieChart>
       </ResponsiveContainer>
 
       <div className="flex flex-wrap justify-center mt-4">
-        {chartData.map((e, i) => (
+        {chartData.map((slice, i) => (
           <div key={i} className="flex items-center mx-2">
-            <div className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: PIE_COLORS[i] }} />
-            <span className="text-sm font-medium">{e.label}</span>
+            <div
+              className="w-4 h-4 rounded-full mr-2"
+              style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }}
+            />
+            <span className="text-sm font-medium">
+              {LEGEND_LABELS[slice.name] ?? slice.name}
+            </span>
           </div>
         ))}
       </div>

@@ -1,53 +1,47 @@
 import { SimpleEventEmitter, Listener } from '@/lib/utils/eventEmitter';
 import { AppDispatcher } from '@/dispatcher/AppDispatcher';
 import {
-    PROD_REQ, PROD_OK, PROD_ERR,
-    PROD_UPD_OK, PROD_DEL_OK,
-} from '@/actions/product/productActions';
-import type { Product } from '@/types/productType';
+    STATS_REQUEST,
+    STATS_SUCCESS,
+    STATS_FAILURE,
+} from '@/actions/stats/productStatsActions';
+import type { ProductStatsDto } from '@/types/statsTypes';
 
-type State = { loading: boolean; products: Product[]; error?: string };
-let state: State = { loading: false, products: [] };
+interface State {
+    loading: boolean;
+    data?: ProductStatsDto;
+    error?: string;
+}
+let state: State = { loading: false };
 
-class ProductStore {
+class ProductStatsStore {
     private emitter = new SimpleEventEmitter();
 
-    // Suscripción / desuscripción para useSyncExternalStore
-    addChangeListener(fn: Listener) { this.emitter.on(fn); }
-    removeChangeListener(fn: Listener) { this.emitter.off(fn); }
-
-    // Devuelve snapshot actual
-    getState(): State { return state; }
+    addChangeListener(fn: Listener) {
+        this.emitter.on(fn);
+    }
+    removeChangeListener(fn: Listener) {
+        this.emitter.off(fn);
+    }
+    getState(): State {
+        return state;
+    }
 
     handle = (action: any) => {
         switch (action.type) {
-            case PROD_REQ:
-                state = { ...state, loading: true };
+            case STATS_REQUEST:
+                state = { loading: true };
                 break;
-            case PROD_OK:
-                state = { loading: false, products: action.payload };
+            case STATS_SUCCESS:
+                state = { loading: false, data: action.payload };
                 break;
-            case PROD_UPD_OK:
-                state = {
-                    ...state,
-                    products: state.products.map(p =>
-                        p.id === action.payload.id ? action.payload : p
-                    ),
-                };
-                break;
-            case PROD_DEL_OK:
-                state = {
-                    ...state,
-                    products: state.products.filter(p => p.id !== action.payload),
-                };
-                break;
-            case PROD_ERR:
-                state = { loading: false, products: [], error: action.error };
+            case STATS_FAILURE:
+                state = { loading: false, error: action.error };
                 break;
         }
         this.emitter.emit();
     };
 }
 
-export const productStore = new ProductStore();
-AppDispatcher.register(productStore.handle);
+export const productStatsStore = new ProductStatsStore();
+AppDispatcher.register(productStatsStore.handle);

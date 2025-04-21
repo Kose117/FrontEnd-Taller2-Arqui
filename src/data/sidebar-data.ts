@@ -1,4 +1,4 @@
-import {ShoppingBasket, Settings, User, Presentation} from "lucide-react";
+import { ShoppingBasket, Settings, User, Presentation } from "lucide-react";
 import type { SidebarData } from "../types/sideBar";
 
 export const sidebarData: SidebarData = {
@@ -19,20 +19,16 @@ export const sidebarData: SidebarData = {
       ],
     },
     {
-      title: 'Otros',
+      title: "Otros",
       items: [
         {
-          title: 'Ajustes',
+          title: "Ajustes",
           icon: Settings,
           items: [
-            {
-              title: 'Cuenta',
-              url: '/cuenta',
-              icon: User,
-            },
-          ],
+            { title: "Cuenta", url: "/ajustes/cuenta", icon: User },
+          ]
         }
-      ],
-    },
+      ]
+    }
   ],
 };

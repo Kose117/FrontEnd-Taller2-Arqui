@@ -8,17 +8,20 @@ export type LinePoint = {
     date: string;
     [seriesName: string]: string | number;
 };
-export type PieSlice = { label: string; value: number }
+
+export type PieSlice = { name: string; value: number };
+
 export interface CardMetric {
-    title: string
-    value: number
-    previousValue: number
+    title: string;
+    value: number;
+    previousValue: number;
 }
+
 export interface CardStats {
-    title: string
-    value: string | number
-    description: string
-    icon?: React.ReactNode
+    title: string;
+    value: string | number;
+    description: string;
+    icon?: React.ReactNode;
 }
 
 export interface ProductStatsDto {

@@ -13,17 +13,17 @@ import { useProductStatsStore } from '@/hooks/flux/stats/useProductStatsStore';
 import { useProductStatsActions } from '@/hooks/flux/stats/useProductStatsActions';
 
 export default function DashboardScreen() {
-  // 1. Rango de fechas
+  // 1. date‐picker range
   const [range, setRange] = useState({
     from: startOfDay(subMonths(new Date(), 1)),
     to: startOfDay(new Date()),
   });
 
-  // 2. Suscripción al store y actions
+  // 2. store & actions
   const { loading, data } = useProductStatsStore();
   const { loadStats } = useProductStatsActions();
 
-  // 3. Cargar datos cada vez que cambie el rango
+  // 3. reload on range change
   useEffect(() => {
     loadStats(
       formatISO(range.from, { representation: 'date' }),
@@ -31,15 +31,15 @@ export default function DashboardScreen() {
     );
   }, [range, loadStats]);
 
-  // 4. Mapear datos del store → props de template
+  // 4. map store → template props
   const cardsData: StatsCardProps[] = useMemo(() => {
     if (!data) return [];
 
     const order = [
-      data.cards.totalSales,
-      data.cards.productsSold,
-      data.cards.avgOrderValue,
-      data.cards.deliveredOrders,
+      data.cards.totalSales,      // index 0 → money
+      data.cards.productsSold,    // index 1 → count
+      data.cards.avgOrderValue,   // index 2 → money
+      data.cards.deliveredOrders, // index 3 → percent
     ];
     const icons = [
       <CalendarSync className="h-4 w-4 text-muted-foreground" />,
@@ -51,13 +51,24 @@ export default function DashboardScreen() {
     return order.map((c, i) => {
       const diff = c.value - c.previousValue;
       const pct = c.previousValue
-        ? Math.round((diff / c.previousValue) * 100 * 10) / 10
+        ? Math.round((diff / c.previousValue) * 1000) / 10
         : 0;
+
+      let displayValue: string | number;
+      if (i === 0 || i === 2) {
+        displayValue = `$${c.value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`;
+      } else if (i === 3) {
+        displayValue = `${c.value.toFixed(1)} %`;
+      } else {
+        displayValue = c.value.toLocaleString();
+      }
+
       return {
         title: c.title,
-        value: i === 3
-          ? `${c.value.toFixed(1)} %`
-          : c.value.toLocaleString(),
+        value: displayValue,
         description: `${diff >= 0 ? '+' : ''}${pct}% vs mes anterior`,
         icon: icons[i],
       };
